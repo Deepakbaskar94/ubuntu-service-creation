@@ -1,0 +1,66 @@
+**********************************************************************************************************************
+Creating service in ubuntu most effecient method
+service ubuntu - https://websofttechs.com/tutorials/how-to-setup-python-script-autorun-in-ubuntu-18-04/
+**********************************************************************************************************************
+
+Creating python file which we have to run
+
+1. sudo vi /usr/bin/test_service.py
+2. write some code
+
+			#!/usr/bin/python3
+			import time
+
+			while True:
+				print "This is a test python file!"
+				time.sleep(2)
+				
+3. Creating a service
+	
+	sudo vi /lib/systemd/system/test-py.service
+	
+4. write the below code inside it edit the python interpreter path and python file path
+
+			[Unit]
+			Description=Test Service
+			After=multi-user.target
+			Conflicts=getty@tty1.service
+
+			[Service]
+			Type=simple
+			ExecStart=/usr/bin/python /home/root/test_service.py
+			StandardInput=tty-force
+
+			[Install]
+			WantedBy=multi-user.target
+			
+5. Reload everytime while we edit the above file
+
+	sudo systemctl daemon-reload
+	
+6. Enable command and start command for the service
+
+	sudo systemctl enable test-py.service
+	sudo systemctl start test-py.service
+	
+7. Check status of the service by below command
+
+	sudo systemctl status test-py.service
+	
+8. Other important commands
+
+	sudo systemctl stop dummy.service          #To stop running service 
+	sudo systemctl start dummy.service         #To start running service 
+	sudo systemctl restart dummy.service       #To restart running service 
+	
+
+
+*********************************************************************************************************************************
+crontab method (not service but command)
+Crontab - https://learn.pimoroni.com/article/running-scripts-at-boot#:~:text=Type%20sudo%20reboot%20to%20reboot,exit%20and%20save%20as%20before.
+********************************************************************************************************************************* 
+crontab -e
+1
+@reboot sudo python3 /home/ubuntu/a/ttp.py &
+	
+	
